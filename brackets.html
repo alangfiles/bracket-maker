@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+        <link rel="stylesheet" href="css/normalize.css">
+        <link rel="stylesheet" href="css/main.css">
+        <script src="js/vendor/modernizr-2.6.2.min.js"></script>
+        <style>
+          #results{
+            margin-top:40px;
+          }
+        </style>
+    </head>
+    <body>
+        <div id="setValues">
+          <label> Randomness (0 - 100):</label>
+          <input id="randomness_input" type="text" /> <br/>
+          <button id="runSim">Go!</button>
+          <button id="clearResults">Clear!</button>
+        </div>
+
+
+
+        <div class="division">
+          <div class="round1">
+          </div>
+          <div class="round2">
+          </div>
+          <div class="round3 sweet-sixteen">
+          </div>
+          <div class="round4 elite-eight">
+          </div>
+          <div class="round5 final-four">
+          </div>
+          <div class="round6 final">
+          </div>
+        </div>
+
+
+        <div id="results"></div>
+  
+
+        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
+        <script src="js/plugins.js"></script>
+        <script src="js/main.js"></script>
+
+        <script>
+    var team1 = 1;
+    var team2 = 6;
+    var randomnessLevel = .5;
+    var avgPoints = 50;
+    var stdBonus = 20;
+
+
+    function winPercentage(team1, team2, randomnessLevel)
+    {
+      //returns how often team1 beats team2 as a percentage
+
+      if(randomnessLevel == 0)
+      {
+        return (team1 < team2 ? 1 : (team1 == team2 ? return 0.5 : 0));
+      }
+      if(randomnessLevel == 1)
+      {
+        return .5;
+      }
+    }
+
+    function basePoints(team1, team2, randomnessLevel)
+    {
+      return avgPoints + stdDevPoints(team1, team2, randomnessLevel);
+    }
+    
+    function bonusPoints(randomnessLevel)
+    {
+      return stdBonus * randomnessLevel * Math.random(); 
+    }
+
+    function whoWins(team1, team2, randomnessLevel)
+    {
+      var doc = document.createElement('div');
+
+      var team1Score = Math.floor(basePoints(team1,team2,randomnessLevel) + bonusPoints(randomnessLevel));
+      var team2Score = Math.floor(basePoints(team2,team1,randomnessLevel) + bonusPoints(randomnessLevel));
+
+      if( team1Score > team2Score)
+      {
+        doc.innerHTML = "Team 1 wins! Level: "+team1Score+" to "+team2Score;
+      }
+      else if(team1Score == team2Score)
+      {
+        if(Math.random() > .5)
+        {
+          doc.innerHTML = "Team 1 wins! 50% Level: "+team1Score+" to "+team2Score;  
+        }
+        else{
+          doc.innerHTML = "Team 2 wins! 50% Level: "+team2Score+" to "+team1Score;
+        }
+        
+      }
+      else{
+        doc.innerHTML = "Team 2 wins! Level: "+team2Score+" to "+team1Score;
+      }
+      $("#results").empty();
+      document.getElementById("results").appendChild(doc);
+    }
+
+
+    $(document).ready(function(){
+
+      $( "#randomness_input" ).change(function() {
+        randomnessLevel = this.value/100;
+      });
+
+      $("#runSim").click(function(){
+        whoWins(team1, team2, randomnessLevel);
+      })
+
+      $("#clearResults").click(function(){
+        $("#results").empty();  
+      })
+      
+
+
+    });
+
+  </script>
+
+
+    </body>
+</html>

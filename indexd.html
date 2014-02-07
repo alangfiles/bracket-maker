@@ -1,0 +1,51 @@
+<html>
+  <head>
+  </head>
+  <body>
+    <div id="results"></div>
+  <script>
+    var team1 = 1;
+    var team2 = 6;
+    var randomnessLevel = .5;
+    var avgPoints = 50;
+
+    function probabilityToWin(team1, team2, randomnessLevel)
+    {
+
+      if(randomnessLevel == 0)
+      {
+        return (team1 < team2 ? 1 : (team1 == team2) ? .5 : 0 );
+      }
+      if(randomnessLevel == 1)
+      {
+        return .5;
+      }
+
+
+
+
+
+    }
+
+    function whoWins(team1, team2, randomnessLevel)
+    {
+      var doc = document.createElement('div');
+
+      if(probabilityToWin(team1,team2,randomnessLevel) > .5)
+      {
+        doc.innerHTML = "Team 1";
+      }
+      else{
+        doc.innerHTML = "Team 2";
+      }
+
+      document.getElementById('results').appendChild(doc);
+    }
+
+    window.onload = function ()
+    {
+      whoWins(team1, team2, randomnessLevel);
+    }
+  </script>
+  </body>
+</html>
